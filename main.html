@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Date, Time & Weather</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .date, .time, .weather {
+      margin: 20px 0;
+      font-size: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Current Date, Time & Weather</h1>
+  <div class="date" id="date"></div>
+  <div class="time" id="time"></div>
+  <div class="weather" id="weather">Detecting location and weather...</div>
+
+  <script>
+    // Update date and time
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById('date').textContent = now.toDateString();
+      document.getElementById('time').textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    // Get weather using wttr.in and Geolocation API
+    function fetchWeather(lat, lon) {
+      fetch(`https://wttr.in/${lat},${lon}?format=%l:+%c+%t`)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('weather').textContent = data;
+        })
+        .catch(error => {
+          document.getElementById('weather').textContent = 'Weather data unavailable.';
+          console.error(error);
+        });
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          fetchWeather(lat, lon);
+        },
+        (error) => {
+          document.getElementById('weather').textContent = 'Geolocation permission denied.';
+          console.error(error);
+        }
+      );
+    } else {
+      document.getElementById('weather').textContent = 'Geolocation not supported.';
+    }
+  </script>
+</body>
+</html>
