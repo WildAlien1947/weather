@@ -26,6 +26,9 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
             margin-bottom: 1.5rem;
             transition: all 0.3s ease;
+            /* --- UPDATED: Ensures the block only takes up the necessary width --- */
+            width: fit-content;
+            min-width: 250px; /* Maintain a minimum width for better mobile layout and readability */
         }
         .data-block:hover {
             transform: translateY(-2px);
@@ -41,8 +44,8 @@
             Current Date, Time & Weather
         </h1>
 
-        <!-- Data Grid -->
-        <div class="grid md:grid-cols-3 gap-6">
+        <!-- Data Flex Container - Changed from grid to flex to allow content-fitting widths -->
+        <div class="flex flex-wrap justify-center gap-6">
 
             <!-- Date Display -->
             <div class="data-block">
@@ -56,8 +59,8 @@
                 <div class="time text-3xl font-bold text-indigo-300" id="time">Initializing...</div>
             </div>
 
-            <!-- Weather Display -->
-            <div class="data-block md:col-span-1">
+            <!-- Weather Display - Now content-sized -->
+            <div class="data-block">
                 <p class="text-lg font-semibold text-gray-400 mb-2">WEATHER / LOCATION</p>
                 <div class="weather text-xl font-medium text-yellow-300" id="weather">Detecting location and weather...</div>
             </div>
