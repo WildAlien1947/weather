@@ -1,67 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Date, Time & Weather</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
-    }
-    .date, .time, .weather {
-      margin: 20px 0;
-      font-size: 1.5em;
-    }
-  </style>
-</head>
-<body>
-  <h1>Current Date, Time & Weather</h1>
-  <div class="date" id="date"></div>
-  <div class="time" id="time"></div>
-  <div class="weather" id="weather">Detecting location and weather...</div>
-
-  <script>
-    // Update date and time
-    function updateDateTime() {
-      const now = new Date();
-      document.getElementById('date').textContent = now.toDateString();
-      document.getElementById('time').textContent = now.toLocaleTimeString();
-    }
-    setInterval(updateDateTime, 1000);
-    updateDateTime();
-
-    // Get weather using wttr. In and Geolocation API
-    function fetchWeather(lat, lon) {
-      fetch(`https://wttr.in/${lat},${lon}?format=%l:+%c+%t`)
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('weather').textContent = data;
-        })
-        .catch(error => {
-          document.getElementById('weather').textContent = 'Weather data unavailable.';
-          console.error(error);
-        });
-    }
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          fetchWeather(lat, lon);
-        },
-        (error) => {
-          document.getElementById('weather').textContent = 'Geolocation permission denied.';
-          console.error(error);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date, Time & Weather</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for a sleek look */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-      );
-    } else {
-      document.getElementById('weather').textContent = 'Geolocation not supported.';
-    }
-  </script>
+        ::-webkit-scrollbar-thumb {
+            background-color: #4f46e5; /* Indigo-600 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background-color: #1f2937; /* Gray-800 */
+        }
+        /* Style for the main data blocks */
+        .data-block {
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            background-color: #1f2937; /* Gray-800 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .data-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.7), 0 0 20px rgba(79, 70, 229, 0.4); /* Neon glow effect */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen p-8 font-mono">
+
+    <div class="max-w-4xl mx-auto">
+        
+        <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-10 tracking-widest text-indigo-400">
+            Current Date, Time & Weather
+        </h1>
+
+        <!-- Data Grid -->
+        <div class="grid md:grid-cols-3 gap-6">
+
+            <!-- Date Display -->
+            <div class="data-block">
+                <p class="text-lg font-semibold text-gray-400 mb-2">DATE (GMT)</p>
+                <div class="date text-3xl font-bold text-green-400" id="date">Initializing...</div>
+            </div>
+
+            <!-- Time Display -->
+            <div class="data-block">
+                <p class="text-lg font-semibold text-gray-400 mb-2">LOCAL TIME</p>
+                <div class="time text-3xl font-bold text-indigo-300" id="time">Initializing...</div>
+            </div>
+
+            <!-- Weather Display -->
+            <div class="data-block md:col-span-1">
+                <p class="text-lg font-semibold text-gray-400 mb-2">WEATHER / LOCATION</p>
+                <div class="weather text-xl font-medium text-yellow-300" id="weather">Detecting location and weather...</div>
+            </div>
+            
+        </div>
+
+        <!-- Security Notice (Highlighted) -->
+        <div class="bg-red-900/40 border-l-4 border-red-500 p-4 rounded-lg shadow-xl mt-10">
+            <!-- Preserving original text structure -->
+            <p class="text-sm text-red-300 font-medium leading-relaxed"> 
+                <span class="font-extrabold text-sm mr-1 text-red-200">SECURITY NOTICE:</span> This website shows your coordinates. If you don't want this, turn off your location permission for this website. If not, exercise extreme caution when trying to stream this website. Proper filtering should be used.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Copyright Footer -->
+    <footer class="mt-12 text-center text-gray-500 text-xs">
+        <p>© Copyright 2025 Wildalien1947 All Rights Reserved.</p>
+    </footer>
+
+    <!-- Original JavaScript Logic (Preserved) -->
+    <script>
+        // Update date and time
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('date').textContent = now.toDateString();
+            document.getElementById('time').textContent = now.toLocaleTimeString();
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // Get weather using wttr.in and Geolocation API
+        function fetchWeather(lat, lon) {
+            // Using a simple fetch request as provided
+            fetch(`https://wttr.in/${lat},${lon}?format=%l:+%c+%t`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('weather').textContent = data;
+                })
+                .catch(error => {
+                    document.getElementById('weather').textContent = 'Weather data unavailable.';
+                    console.error(error);
+                });
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    fetchWeather(lat, lon);
+                },
+                (error) => {
+                    // Display error in the weather box
+                    let message = 'Geolocation permission denied.';
+                    if (error.code === error.POSITION_UNAVAILABLE) {
+                         message = 'Location information is unavailable.';
+                    } else if (error.code === error.TIMEOUT) {
+                         message = 'Request to get user location timed out.';
+                    }
+                    document.getElementById('weather').textContent = message;
+                    console.error('Geolocation Error:', error);
+                }
+            );
+        } else {
+            document.getElementById('weather').textContent = 'Geolocation not supported.';
+        }
+    </script>
 </body>
 </html>
-
-<p> SECURITY NOTICE: This website shows your coordinates. If you don't want this, turn off your location permission for this website. If not, exercise extreme caution when trying to stream this website. Proper filtering should be used.<p>
-<© Copyright 2025 Wildalien1947 All Rights Reserved.>
